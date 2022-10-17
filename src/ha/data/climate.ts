@@ -2,6 +2,8 @@ import { HassEntityAttributeBase, HassEntityBase } from "home-assistant-js-webso
 
 export type HvacMode = "off" | "heat" | "cool" | "heat_cool" | "auto" | "dry" | "fan_only";
 
+export type PresetMode = "sleep" | "away" | "home" | "comfort";
+
 export const CLIMATE_PRESET_NONE = "none";
 
 export type HvacAction = "off" | "heating" | "cooling" | "drying" | "idle";
@@ -26,8 +28,8 @@ export type ClimateEntity = HassEntityBase & {
         max_humidity?: number;
         fan_mode?: string;
         fan_modes?: string[];
-        preset_mode?: string;
-        preset_modes?: string[];
+        preset_mode: PresetMode;
+        preset_modes: PresetMode[];
         swing_mode?: string;
         swing_modes?: string[];
         aux_heat?: "on" | "off";
@@ -52,5 +54,16 @@ const hvacModeOrdering: { [key in HvacMode]: number } = {
     off: 7,
 };
 
+const presetModeOrdering: { [key in PresetMode]: number } = {
+    sleep: 1,
+    away: 2,
+    home: 3,
+    comfort: 4,
+};
+
 export const compareClimateHvacModes = (mode1: HvacMode, mode2: HvacMode) =>
     hvacModeOrdering[mode1] - hvacModeOrdering[mode2];
+
+
+export const compareClimatePresetModes = (mode1: PresetMode, mode2: PresetMode) =>
+    presetModeOrdering[mode1] - presetModeOrdering[mode2];
