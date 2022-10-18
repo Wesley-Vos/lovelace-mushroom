@@ -175,7 +175,7 @@ export class MediaPlayerCard extends MushroomBaseCard implements LovelaceCard {
         const stateValue =
             this.volume != null && this._config.show_volume_level
                 ? `${stateDisplay} - ${this.volume}%`
-                : stateDisplay;
+                : entity.attributes.source ?? stateDisplay;
 
         const rtl = computeRTL(this.hass);
 
