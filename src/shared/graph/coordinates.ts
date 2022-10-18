@@ -12,14 +12,14 @@ const calcPoints = (
     hours: number,
     width: number,
     height: number,
-    detail: number,
+    points: number,
     min: number,
     max: number
 ): number[][] => {
     const coords = [] as number[][];
     let yRatio = (max - min) / height;
     yRatio = yRatio !== 0 ? yRatio : height;
-    let xRatio = width / (hours - (detail === 1 ? 1 : 0));
+    let xRatio = width / (points * hours - 1);
     xRatio = isFinite(xRatio) ? xRatio : width;
 
     const first = history.filter(Boolean)[0];
@@ -40,7 +40,7 @@ const calcPoints = (
     };
 
     for (let i = 0; i < history.length; i += 1) {
-        getCoords(history[i], i, 0, detail);
+        getCoords(history[i], i, 0);
     }
 
     if (coords.length === 1) {
@@ -56,30 +56,22 @@ export const coordinates = (
     hours: number,
     width: number,
     height: number,
-    detail: number,
-    limits?: { min?: number; max?: number }
+    points: number,
 ): number[][] | undefined => {
     history.forEach((item) => {
         item.state = Number(item.state);
     });
     history = history.filter((item) => !Number.isNaN(item.state));
 
-    const min =
-        limits?.min !== undefined ? limits.min : Math.min(...history.map((item) => item.state));
-    const max =
-        limits?.max !== undefined ? limits.max : Math.max(...history.map((item) => item.state));
+    const min = Math.min(...history.map((item) => item.state));
+    const max = Math.max(...history.map((item) => item.state));
     const now = new Date().getTime();
 
-    const reduce = (res, item, point) => {
+    const reduce = (res, item) => {
         const age = now - new Date(item.last_changed).getTime();
-
-        let key = Math.abs(age / (1000 * 3600) - hours);
-        if (point) {
-            key = (key - Math.floor(key)) * 60;
-            key = Number((Math.round(key / 10) * 10).toString()[0]);
-        } else {
-            key = Math.floor(key);
-        }
+        const interval = (age/ (1000 * 3600) * points) - hours * points
+        const key = interval < 0 ? Math.floor(Math.abs(interval)) : 0;
+        
         if (!res[key]) {
             res[key] = [];
         }
@@ -87,14 +79,11 @@ export const coordinates = (
         return res;
     };
 
-    history = history.reduce((res, item) => reduce(res, item, false), []);
-    if (detail > 1) {
-        history = history.map((entry) => entry.reduce((res, item) => reduce(res, item, true), []));
-    }
+    history = history.reduce((res, item) => reduce(res, item), []);
 
     if (!history.length) {
         return undefined;
     }
 
-    return calcPoints(history, hours, width, height, detail, min, max);
+    return calcPoints(history, hours, width, height, points, min, max);
 };
