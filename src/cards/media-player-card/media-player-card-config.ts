@@ -1,4 +1,4 @@
-import { array, assign, boolean, enums, object, optional } from "superstruct";
+import { array, assign, boolean, enums, object, optional, string } from "superstruct";
 import { LovelaceCardConfig } from "../../ha";
 import { ActionsSharedConfig, actionsSharedConfigStruct } from "../../shared/config/actions-config";
 import {
@@ -31,6 +31,7 @@ export type MediaPlayerCardConfig = LovelaceCardConfig &
     EntitySharedConfig &
     AppearanceSharedConfig &
     ActionsSharedConfig & {
+        icon_color?: string;
         use_media_info?: boolean;
         show_volume_level?: boolean;
         volume_controls?: MediaPlayerVolumeControl[];
@@ -42,6 +43,7 @@ export const mediaPlayerCardConfigStruct = assign(
     lovelaceCardConfigStruct,
     assign(entitySharedConfigStruct, appearanceSharedConfigStruct, actionsSharedConfigStruct),
     object({
+        icon_color: optional(string()),
         use_media_info: optional(boolean()),
         show_volume_level: optional(boolean()),
         volume_controls: optional(array(enums(MEDIA_PLAYER_VOLUME_CONTROLS))),
