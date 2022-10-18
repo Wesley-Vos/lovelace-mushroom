@@ -39,7 +39,7 @@ import "./controls/climate-temperature-control";
 import { isTemperatureControlVisible } from "./controls/climate-temperature-control";
 import "./controls/climate-preset-modes-control";
 import { isPresetModesVisible } from "./controls/climate-preset-modes-control";
-import { getHvacActionColor, getHvacActionIcon, getHvacModeColor } from "./utils";
+import { getHvacActionColor, getHvacActionIcon, getHvacModeColor, getPresetModeIcon } from "./utils";
 
 type ClimateCardControl = "temperature_control" | "hvac_mode_control" | "preset_mode_control";
 
@@ -147,7 +147,8 @@ export class ClimateCard extends MushroomBaseCard implements LovelaceCard {
         const entity = this.hass.states[entity_id] as ClimateEntity;
 
         const name = this._config.name || entity.attributes.friendly_name || "";
-        const icon = this._config.icon || stateIcon(entity);
+        // const icon = this._config.icon || stateIcon(entity);
+        const icon = getPresetModeIcon(entity.attributes.preset_mode)
         const appearance = computeAppearance(this._config);
         const picture = computeEntityPicture(entity, appearance.icon_type);
 

@@ -51,7 +51,7 @@ export class ClimatePresetModesControl extends LitElement {
 
     private renderModeButton(mode: PresetMode) {
         const iconStyle = {};
-        const color = mode === "sleep" || mode === "away" ? "var(--rgb-grey)" : getPresetModeColor(mode);
+        const color = getPresetModeColor(mode);
         if (mode === this.entity.attributes.preset_mode) {
             iconStyle["--icon-color"] = `rgb(${color})`;
             iconStyle["--bg-color"] = `rgba(${color}, 0.2)`;
