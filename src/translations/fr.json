@@ -130,6 +130,18 @@
             "climate": {
                 "show_temperature_control": "Contrôle de la température?",
                 "hvac_modes": "Modes du thermostat"
+            },
+            "graph": {
+                "graph_mode": "Mode graphique",
+                "display_mode": "Mode d'affichage",
+                "graph_mode_type": {
+                    "fill": "Remplissage",
+                    "line": "Ligne"
+                },
+                "display_mode_type": {
+                    "standard": "Standard",
+                    "compact": "Compact"
+                }
             }
         },
         "chip": {

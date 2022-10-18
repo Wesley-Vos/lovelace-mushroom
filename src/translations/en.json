@@ -130,6 +130,18 @@
             "climate": {
                 "show_temperature_control": "Temperature control?",
                 "hvac_modes": "HVAC Modes"
+            },
+            "graph": {
+                "graph_mode": "Graph mode",
+                "display_mode": "Display mode",
+                "graph_mode_type": {
+                    "fill": "Fill",
+                    "line": "Line"
+                },
+                "display_mode_type": {
+                    "standard": "Standard",
+                    "compact": "Compact"
+                }
             }
         },
         "chip": {
