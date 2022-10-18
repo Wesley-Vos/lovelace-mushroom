@@ -63,8 +63,6 @@ export const coordinates = (
     });
     history = history.filter((item) => !Number.isNaN(item.state));
 
-    const min = Math.min(...history.map((item) => item.state));
-    const max = Math.max(...history.map((item) => item.state));
     const now = new Date().getTime();
 
     const reduce = (res, item) => {
@@ -80,10 +78,19 @@ export const coordinates = (
     };
 
     history = history.reduce((res, item) => reduce(res, item), []);
+    history.length = Math.ceil(hours * points)
 
     if (!history.length) {
         return undefined;
     }
 
+    let min = Number.MAX_VALUE
+    let max = Number.MIN_VALUE
+    history.forEach((item) => {
+        const val = average(item)
+        min = val < min ? val : min
+        max = val > max ? val : max
+    })
+    
     return calcPoints(history, hours, width, height, points, min, max);
 };

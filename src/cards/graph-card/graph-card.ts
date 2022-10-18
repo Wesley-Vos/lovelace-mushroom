@@ -280,10 +280,9 @@ export class GraphCard extends MushroomBaseElement implements LovelaceCard {
         const rtl = computeRTL(this.hass);
 
         return html`
-            <ha-card class=${classMap({ "fill-container": appearance.fill_container ?? false })}>
-                <mushroom-card .appearance=${appearance} ?rtl=${rtl}>
+            <ha-card class=${classMap({ "fill-container": appearance.fill_container ?? false })} style='padding: 0; overflow:hidden'>
+                <mushroom-card .appearance=${appearance} ?rtl=${rtl} style='padding: var(--spacing)'>
                     <mushroom-state-item
-                        style='padding-bottom: var(--spacing)'
                         ?rtl=${rtl}
                         .appearance=${appearance}
                         @action=${this._handleAction}

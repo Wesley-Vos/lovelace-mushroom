@@ -1,1 +1,1 @@
-export const GRAPH_STROKE_WIDTH = 5;
+export const GRAPH_STROKE_WIDTH = 1;
