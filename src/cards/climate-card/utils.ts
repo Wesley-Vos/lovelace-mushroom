@@ -11,10 +11,10 @@ export const CLIMATE_HVAC_MODE_COLORS: Record<HvacMode, string> = {
 };
 
 export const CLIMATE_PRESET_MODE_COLORS: Record<PresetMode, string> = {
-    sleep: "var(--rgb-state-climate-auto)",
-    away: "var(--rgb-state-climate-cool)",
-    comfort: "var(--rgb-state-climate-dry)",
-    home: "var(--rgb-state-climate-fan-only)",
+    sleep: "var(--rgb-blue)",
+    away: "var(--rgb-blue)",
+    comfort: "var(--rgb-red)",
+    home: "var(--rgb-green)",
 };
 
 export const CLIMATE_HVAC_ACTION_COLORS: Record<HvacAction, string> = {
