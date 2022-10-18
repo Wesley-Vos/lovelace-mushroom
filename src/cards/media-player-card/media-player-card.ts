@@ -1,6 +1,8 @@
+import { HassEntity } from "home-assistant-js-websocket";
 import { css, CSSResultGroup, html, PropertyValues, TemplateResult } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
+import { styleMap } from "lit/directives/style-map.js";
 import {
     actionHandler,
     ActionHandlerEvent,
@@ -20,6 +22,7 @@ import "../../shared/shape-icon";
 import { computeAppearance } from "../../utils/appearance";
 import { MushroomBaseCard } from "../../utils/base-card";
 import { cardStyle } from "../../utils/card-styles";
+import { computeRgbColor } from "../../utils/colors";
 import { registerCustomCard } from "../../utils/custom-cards";
 import { computeEntityPicture } from "../../utils/info";
 import { Layout } from "../../utils/layout";
@@ -205,6 +208,25 @@ export class MediaPlayerCard extends MushroomBaseCard implements LovelaceCard {
                         : null}
                 </mushroom-card>
             </ha-card>
+        `;
+    }
+
+    renderIcon(entity: HassEntity, icon: string): TemplateResult {
+        const active = isActive(entity);
+        const iconStyle = {};
+        const iconColor = this._config?.icon_color;
+        if (iconColor) {
+            const iconRgbColor = computeRgbColor(iconColor);
+            iconStyle["--icon-color"] = `rgb(${iconRgbColor})`;
+            iconStyle["--shape-color"] = `rgba(${iconRgbColor}, 0.2)`;
+        }
+        return html`
+            <mushroom-shape-icon
+                slot="icon"
+                .disabled=${!active}
+                .icon=${icon}
+                style=${styleMap(iconStyle)}
+            ></mushroom-shape-icon>
         `;
     }
 

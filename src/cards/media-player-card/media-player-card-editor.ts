@@ -30,7 +30,14 @@ export const MEDIA_LABELS = [
 const computeSchema = memoizeOne((localize: LocalizeFunc, icon?: string): HaFormSchema[] => [
     { name: "entity", selector: { entity: { domain: MEDIA_PLAYER_ENTITY_DOMAINS } } },
     { name: "name", selector: { text: {} } },
-    { name: "icon", selector: { icon: { placeholder: icon } } },
+    {
+        type: "grid",
+        name: "",
+        schema: [
+            { name: "icon", selector: { icon: { placeholder: icon } } },
+            { name: "icon_color", selector: { "mush-color": {} } },
+        ]
+    },
     ...APPEARANCE_FORM_SCHEMA,
     {
         type: "grid",
