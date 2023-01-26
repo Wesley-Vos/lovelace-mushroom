@@ -9,9 +9,9 @@ import { APPEARANCE_FORM_SCHEMA } from "../../shared/config/appearance-config";
 import { MushroomBaseElement } from "../../utils/base-element";
 import { GENERIC_LABELS } from "../../utils/form/generic-fields";
 import { HaFormSchema } from "../../utils/form/ha-form";
+import { UiAction } from "../../utils/form/ha-selector";
 import { stateIcon } from "../../utils/icons/state-icon";
 import { loadHaComponents } from "../../utils/loader";
-import { Action } from "../../utils/form/custom/ha-selector-mushroom-action";
 import {
     DISPLAY_MODE,
     GRAPH_CARD_EDITOR_NAME,
@@ -24,7 +24,7 @@ import { GraphCardConfig, graphCardConfigStruct } from "./graph-card-config";
 import { SelectOption } from "../../utils/form/ha-selector";
 import { TEMPLATE_LABELS } from "../template-card/template-card-editor";
 
-const actions: Action[] = ["more-info", "call-service", "none"];
+const actions: UiAction[] = ["more-info", "call-service", "none"];
 const GRAPH_LABELS = ["graph_mode", "display_mode"];
 
 // const computeSchema = memoizeOne((localize: LocalizeFunc, icon?: string): HaFormSchema[] => [
