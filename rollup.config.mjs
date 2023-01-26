@@ -1,9 +1,9 @@
-import commonjs from "@rollup/plugin-commonjs";
-import nodeResolve from "@rollup/plugin-node-resolve";
-import typescript from "@rollup/plugin-typescript";
 import babel from "@rollup/plugin-babel";
+import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
-import { terser } from "rollup-plugin-terser";
+import nodeResolve from "@rollup/plugin-node-resolve";
+import terser from "@rollup/plugin-terser";
+import typescript from "@rollup/plugin-typescript";
 import serve from "rollup-plugin-serve";
 import ignore from "./rollup-plugins/rollup-ignore-plugin.js";
 
@@ -31,7 +31,7 @@ const serveOptions = {
 
 const plugins = [
     ignore({
-        files: IGNORED_FILES.map(file => require.resolve(file))
+        files: IGNORED_FILES.map((file) => require.resolve(file)),
     }),
     typescript({
         declaration: false,
@@ -40,7 +40,6 @@ const plugins = [
     json(),
     commonjs(),
     babel({
-        exclude: "node_modules/**",
         babelHelpers: "bundled",
     }),
     ...(dev ? [serve(serveOptions)] : [terser()]),
@@ -52,9 +51,9 @@ export default [
         output: {
             dir: "dist",
             format: "es",
+            inlineDynamicImports: true,
         },
         plugins,
-        inlineDynamicImports: true,
         moduleContext: (id) => {
             const thisAsWindowForModules = [
                 "node_modules/@formatjs/intl-utils/lib/src/diff.js",
