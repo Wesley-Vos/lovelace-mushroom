@@ -32,6 +32,7 @@ import {
     MEDIA_PLAYER_ENTITY_DOMAINS,
 } from "./const";
 import "./controls/media-player-media-control";
+import "./controls/media-player-source-control";
 import { isMediaControlVisible } from "./controls/media-player-media-control";
 import "./controls/media-player-volume-control";
 import { isVolumeControlVisible } from "./controls/media-player-volume-control";
@@ -43,11 +44,12 @@ import {
     getVolumeLevel,
 } from "./utils";
 
-type MediaPlayerCardControl = "media_control" | "volume_control";
+type MediaPlayerCardControl = "media_control" | "volume_control" | "source_control";
 
 const CONTROLS_ICONS: Record<MediaPlayerCardControl, string> = {
     media_control: "mdi:play-pause",
     volume_control: "mdi:volume-high",
+    source_control: "mdi:source-branch",
 };
 
 registerCustomCard({
@@ -80,9 +82,15 @@ export class MediaPlayerCard extends MushroomBaseCard implements LovelaceCard {
 
     @state() private _controls: MediaPlayerCardControl[] = [];
 
+    @state() private _showSourceControl: Boolean = false;
+
     _onControlTap(ctrl, e): void {
         e.stopPropagation();
-        this._activeControl = ctrl;
+        if (ctrl !== "source_control") {
+            this._activeControl = ctrl;
+        } else {
+            this._showSourceControl = !this._showSourceControl
+        }
     }
 
     getCardSize(): number | Promise<number> {
@@ -206,6 +214,12 @@ export class MediaPlayerCard extends MushroomBaseCard implements LovelaceCard {
                               </div>
                           `
                         : null}
+                    ${this._showSourceControl ?
+                        html`<mushroom-media-player-source-control
+                            .hass=${this.hass}
+                            .entity=${entity}
+                        ></mushroom-media-player-source-control>`
+                        : null}
                 </mushroom-card>
             </ha-card>
         `;
@@ -232,6 +246,7 @@ export class MediaPlayerCard extends MushroomBaseCard implements LovelaceCard {
 
     private renderOtherControls(): TemplateResult | null {
         const otherControls = this._controls.filter((control) => control != this._activeControl);
+        otherControls.push("source_control")
 
         return html`
             ${otherControls.map(

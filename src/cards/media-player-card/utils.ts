@@ -309,3 +309,11 @@ export const handleMediaControlClick = (
         ...parameters,
     });
 };
+
+export function getCurrentSource(entity: HassEntity) {
+    return entity.attributes.source ?? undefined
+}
+
+export function getSources(entity: HassEntity) {
+    return entity.attributes.source_list
+}
