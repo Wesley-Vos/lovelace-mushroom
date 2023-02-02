@@ -2,18 +2,11 @@ import { ERR_CONNECTION_LOST, HassEntity } from "home-assistant-js-websocket";
 import { css, CSSResultGroup, html, LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { HomeAssistant } from "../../../ha";
-import setupCustomlocalize from "../../../localize";
 import { getCurrentSource, getSources } from "../utils";
 import "../../../shared/form/mushroom-select";
 
 @customElement("mushroom-media-player-source-control")
 export class MediaPlayerSourceControl extends LitElement {
-    @property() public label = "";
-
-    @property() public value?: string;
-
-    @property() public configValue = "";
-
     @property() public hass!: HomeAssistant;
 
     @property({ attribute: false }) public entity!: HassEntity;
@@ -21,14 +14,9 @@ export class MediaPlayerSourceControl extends LitElement {
     _selectChanged(ev) {
         const value = ev.target.value;
 
-        if (value) {
-            this.dispatchEvent(
-                new CustomEvent("value-changed", {
-                    detail: {
-                        value,
-                    },
-                })
-            );
+        const currentValue = getCurrentSource(this.entity);
+
+        if (value && value !== currentValue) {
             this._setValue(value);
         }
     }
@@ -45,21 +33,15 @@ export class MediaPlayerSourceControl extends LitElement {
     }
 
     render() {
-        const customLocalize = setupCustomlocalize(this.hass);
-
-        const value = this.value || getCurrentSource(this.entity);
+        const value = getCurrentSource(this.entity);
 
         const options = getSources(this.entity);
 
-        console.log(value, options)
-
         return html`
             <mushroom-select
-                .label=${this.label}
-                .configValue=${this.configValue}
                 @selected=${this._selectChanged}
                 @closed=${(e) => e.stopPropagation()}
-                .value=${value}
+                .value=${value ?? ""}
                 naturalMenuWidth
             >
                 ${options.map((option) => {
