@@ -147,6 +147,14 @@
                     "standard": "Standard",
                     "compact": "Compact"
                 }
+            },
+            "number": {
+                "display_mode": "Mode d'affichage",
+                "display_mode_list": {
+                    "default": "Par défaut (Curseur)",
+                    "slider": "Curseur",
+                    "buttons": "Boutons"
+                }
             }
         },
         "chip": {
