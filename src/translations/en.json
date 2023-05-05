@@ -179,10 +179,14 @@
                     "entity": "Entity",
                     "light": "Light",
                     "menu": "Menu",
+                    "spacer": "Spacer",
                     "template": "Template",
                     "weather": "Weather"
                 }
             }
         }
+    },
+    "card": {
+        "not_found": "Entity not found"
     }
 }

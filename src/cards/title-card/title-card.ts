@@ -1,5 +1,5 @@
 import { UnsubscribeFunc } from "home-assistant-js-websocket";
-import { css, CSSResultGroup, html, PropertyValues, TemplateResult } from "lit";
+import { css, CSSResultGroup, html, nothing, PropertyValues } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
@@ -90,7 +90,9 @@ export class TitleCard extends MushroomBaseElement implements LovelaceCard {
     }
 
     private getValue(key: TemplateKey) {
-        return this.isTemplate(key) ? this._templateResults[key]?.result : this._config?.[key];
+        return this.isTemplate(key)
+            ? this._templateResults[key]?.result?.toString()
+            : this._config?.[key];
     }
 
     private _handleTitleAction(ev: ActionHandlerEvent) {
@@ -107,9 +109,9 @@ export class TitleCard extends MushroomBaseElement implements LovelaceCard {
         handleAction(this, this.hass!, config, ev.detail.action!);
     }
 
-    protected render(): TemplateResult {
+    protected render() {
         if (!this._config || !this.hass) {
-            return html``;
+            return nothing;
         }
 
         const title = this.getValue("title");
@@ -144,7 +146,7 @@ export class TitleCard extends MushroomBaseElement implements LovelaceCard {
                               <h1 class="title">${title}${this.renderArrow()}</h1>
                           </div>
                       `
-                    : null}
+                    : nothing}
                 ${subtitle
                     ? html`
                           <div
@@ -159,7 +161,7 @@ export class TitleCard extends MushroomBaseElement implements LovelaceCard {
                               <h2 class="subtitle">${subtitle}${this.renderArrow()}</h2>
                           </div>
                       `
-                    : null}
+                    : nothing}
             </div>
         `;
     }
