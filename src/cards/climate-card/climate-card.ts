@@ -28,7 +28,6 @@ import { computeAppearance } from "../../utils/appearance";
 import { MushroomBaseCard } from "../../utils/base-card";
 import { cardStyle } from "../../utils/card-styles";
 import { registerCustomCard } from "../../utils/custom-cards";
-import { stateIcon } from "../../utils/icons/state-icon";
 import { computeEntityPicture } from "../../utils/info";
 import { ClimateCardConfig } from "./climate-card-config";
 import { CLIMATE_CARD_EDITOR_NAME, CLIMATE_CARD_NAME, CLIMATE_ENTITY_DOMAINS } from "./const";
@@ -159,8 +158,8 @@ export class ClimateCard extends MushroomBaseCard implements LovelaceCard {
             this.hass.localize,
             stateObj,
             this.hass.locale,
-            this.hass.entities,
-            this.hass.connection.haVersion
+            this.hass.config,
+            this.hass.entities
         );
         if (stateObj.attributes.current_temperature !== null) {
             const temperature = formatNumber(
@@ -202,20 +201,17 @@ export class ClimateCard extends MushroomBaseCard implements LovelaceCard {
         `;
     }
 
-    protected renderIcon(entity: ClimateEntity, icon: string): TemplateResult {
-        const available = isAvailable(entity);
-        const color = getHvacModeColor(entity.state as HvacMode);
+    protected renderIcon(stateObj: ClimateEntity, icon?: string): TemplateResult {
+        const available = isAvailable(stateObj);
+        const color = getHvacModeColor(stateObj.state as HvacMode);
         const iconStyle = {};
         iconStyle["--icon-color"] = `rgb(${color})`;
         iconStyle["--shape-color"] = `rgba(${color}, 0.2)`;
 
         return html`
-            <mushroom-shape-icon
-                slot="icon"
-                .disabled=${!available}
-                .icon=${icon}
-                style=${styleMap(iconStyle)}
-            ></mushroom-shape-icon>
+            <mushroom-shape-icon slot="icon" .disabled=${!available} style=${styleMap(iconStyle)}>
+                <ha-state-icon .state=${stateObj} .icon=${icon}></ha-state-icon>
+            </mushroom-shape-icon>
         `;
     }
 

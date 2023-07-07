@@ -21,12 +21,14 @@ import {
     subscribeRenderTemplate,
 } from "../../../ha";
 import { computeRgbColor } from "../../../utils/colors";
+import { getWeatherSvgIcon } from "../../../utils/icons/weather-icon";
 import {
     computeChipComponentName,
     computeChipEditorComponentName,
 } from "../../../utils/lovelace/chip/chip-element";
 import { LovelaceChip, TemplateChipConfig } from "../../../utils/lovelace/chip/types";
 import { LovelaceChipEditor } from "../../../utils/lovelace/types";
+import { weatherSVGStyles } from "../../../utils/weather";
 
 const TEMPLATE_KEYS = ["content", "icon", "icon_color", "picture"] as const;
 type TemplateKey = (typeof TEMPLATE_KEYS)[number];
@@ -108,6 +110,7 @@ export class TemplateChip extends LitElement implements LovelaceChip {
         const picture = this.getValue("picture");
 
         const rtl = computeRTL(this.hass);
+        const weatherSvg = getWeatherSvgIcon(icon);
 
         return html`
             <mushroom-chip
@@ -120,7 +123,13 @@ export class TemplateChip extends LitElement implements LovelaceChip {
                 .avatar=${picture ? (this.hass as any).hassUrl(picture) : undefined}
                 .avatarOnly=${picture && !content}
             >
-                ${icon && !picture ? this.renderIcon(icon, iconColor) : nothing}
+                ${!picture
+                    ? weatherSvg
+                        ? weatherSvg
+                        : icon
+                        ? this.renderIcon(icon, iconColor)
+                        : nothing
+                    : nothing}
                 ${content ? this.renderContent(content) : nothing}
             </mushroom-chip>
         `;
@@ -132,7 +141,7 @@ export class TemplateChip extends LitElement implements LovelaceChip {
             const iconRgbColor = computeRgbColor(iconColor);
             iconStyle["--color"] = `rgb(${iconRgbColor})`;
         }
-        return html`<ha-icon .icon=${icon} style=${styleMap(iconStyle)}></ha-icon>`;
+        return html`<ha-state-icon .icon=${icon} style=${styleMap(iconStyle)}></ha-state-icon>`;
     }
 
     protected renderContent(content: string): TemplateResult {
@@ -233,9 +242,10 @@ export class TemplateChip extends LitElement implements LovelaceChip {
             mushroom-chip {
                 cursor: pointer;
             }
-            ha-icon {
+            ha-state-icon {
                 color: var(--color);
             }
+            ${weatherSVGStyles}
         `;
     }
 }
