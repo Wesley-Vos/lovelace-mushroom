@@ -243,9 +243,9 @@ export class MediaPlayerCard extends MushroomBaseCard implements LovelaceCard {
             <mushroom-shape-icon
                 slot="icon"
                 .disabled=${!active}
-                .icon=${icon}
-                style=${styleMap(iconStyle)}
-            ></mushroom-shape-icon>
+                style=${styleMap(iconStyle)}>
+                <ha-state-icon .icon=${icon}></ha-state-icon>
+            </mushroom-shape-icon>
         `;
     }
 
