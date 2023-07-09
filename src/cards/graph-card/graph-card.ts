@@ -337,9 +337,9 @@ export class GraphCard extends MushroomBaseElement implements LovelaceCard {
         return html`
             <mushroom-shape-icon
                 style=${styleMap(iconStyle)}
-                slot="icon"
-                .icon=${icon}
-            ></mushroom-shape-icon>
+                slot="icon">
+                <ha-state-icon .icon=${icon}></ha-state-icon>
+            </mushroom-shape-icon>
         `;
     }
 
